@@ -1,0 +1,8 @@
+#Tentative pseudopython#
+int i = 1
+int f = 1
+int g = 1
+for(i; i = 100; i++):
+ g = 2*i
+ f = f+g
+print f

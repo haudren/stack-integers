@@ -24,6 +24,18 @@ class IntTokenizer(Tokenizer):
     self.add_pattern('label:(.+)$', 'LABEL')
     self.add_pattern('goto:(.+)$', 'GOTO')
     self.add_pattern('je (\d+) (.+)$', 'JUMPEQUAL')
+    self.add_pattern('store (.+)$', 'STORE')
+    self.add_pattern('load (.+)$', 'LOAD')
+    self.add_pattern('print (\S+)', 'PRINT')
+
+class PpyTokenizer(Tokenizer):
+  def __init__(self):
+    Tokenizer.__init__(self)
+    self.add_pattern('#(.*)#$', 'COMMENT')
+    self.add_pattern('int (.+) = (\d+)$', 'VARINT')
+    self.add_pattern('for\((.+);(.+[=<>].+); (.+)\):$', 'FORLOOP')
+    self.add_pattern('(\S+) = (.+)$', 'ASSIGN')
+    self.add_pattern('print (\S+)$', 'PRINT')
 
 if __name__ == '__main__':
   tokenizer = IntTokenizer()

@@ -37,6 +37,7 @@ class Language(object):
     self.tokenizer = IntTokenizer()
 
     self.actions = {}
+    self.variables = {}
     self.labels = {}
     self.int_actions()
 
@@ -46,6 +47,13 @@ class Language(object):
     self.actions['MULT'] = self.stack.multiply
     self.actions['GOTO'] = self.goto
     self.actions['JUMPEQUAL'] = self.jump_equal
+    self.actions['STORE'] = self.store
+    self.actions['LOAD'] = self.load
+    self.actions['PRINT'] = self.print_var
+
+  def print_var(self, adress, index=0):
+    print self.variables[adress]
+    return index+1
 
   def save_label(self, label, index):
     self.labels[label] = index
@@ -58,6 +66,14 @@ class Language(object):
       return self.goto(label, index)
     else:
       return index+1
+
+  def load(self, adress, index=0):
+    i = self.stack.push(self.variables[adress], index)
+    return i
+
+  def store(self, adress, index=0):
+    self.variables[adress] = self.stack.pop()
+    return index+1
 
   def compile(self, filename):
     self.instructions = []
@@ -86,16 +102,12 @@ class Language(object):
     i = 0
     while i < len(self.instructions):
       token, args = self.instructions[i]
-      i_before = i
       i = self.actions[token](*args, index=i)
-      print token, i_before, i
-
-    print "Result : {}".format(self.stack.peek())
 
 if __name__ == '__main__':
   l = Language()
   print "COMPILING..."
-  l.compile('test.bc')
+  l.compile('source.bc')
   print l.labels
   print 
   print "EXECUTE!"

@@ -10,3 +10,23 @@ goto:loop
 label:mult
 mult
 div
+#Test Variables#
+push 1
+push 1
+store 0x0
+store 0x1
+label:forloop
+load 0x0
+load 0x1
+push 1
+add
+#Store/load to update i#
+store 0x1
+load 0x1
+mult
+store 0x0
+load 0x1
+je 100 end
+goto:forloop
+label:end
+load 0x0
